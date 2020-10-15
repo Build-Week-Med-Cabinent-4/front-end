@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom"
+import HomePage from "./components/HomePage"
+import Saved from "./components/Saved"
+import Suggestions from "./components/Suggestions"
 
 //component imports
 
@@ -28,6 +32,7 @@ const toggle = () => setIsOpen(!isOpen);
 
   return (
   <>
+  <Router>
     <Container className = "p-0" fluid={true} >
       <Navbar className = "border-bottom p-4" color="light" light expand="md">
         <NavbarBrand href="/">Med-Cabinet</NavbarBrand>
@@ -35,18 +40,33 @@ const toggle = () => setIsOpen(!isOpen);
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
-            <NavLink className = "font-weight-bolder" to = "/">Home</NavLink>
+            <Link className = "nav-link font-weight-bolder" to = "/">Home</Link>
             </NavItem>
             <NavItem>
-            <NavLink className = "font-weight-bolder" to = "/saved">saved</NavLink>
+            <Link className = "nav-link font-weight-bolder" to = "/saved">saved</Link>
             </NavItem>
             <NavItem>
-            <NavLink className = "font-weight-bolder" to = "/suggestions">suggestions</NavLink>
+            <Link className = "nav-link font-weight-bolder" to = "/suggestions">suggestions</Link>
             </NavItem>
             </Nav>
           </Collapse>
         </Navbar>
+        <Switch>
+          <Route exact path= "/">
+            <HomePage />
+          </Route>
+
+          <Route exact path= "/saved">
+            <Saved />
+          </Route>
+
+          <Route exact path= "/suggestions">
+            <Suggestions />
+          </Route>
+
+        </Switch>
       </Container>
+      </Router>
   </>
   );
 }
