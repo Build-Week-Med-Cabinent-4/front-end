@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom"
 import HomePage from "./components/HomePage"
 import Saved from "./components/Saved"
 import Suggestions from "./components/Suggestions"
+import "./styles.css";
 
 //component imports
 
