@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom"
 import HomePage from "./components/HomePage"
@@ -15,13 +15,7 @@ import {Container,
  NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText
+  NavItem
 } from 'reactstrap';
 
 function App() {
