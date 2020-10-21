@@ -1,16 +1,20 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import * as yup from "yup";
+import NavHeader from './NavHeader'
+import Strains from './Strains'
 
-const Suggestions = () => {
+const Suggestions = ( {addToSavedList} ) => {
      //This is our DATA STATE
   const [strainState, setNewStrain] = useState({
     name: "",
     email: "",
     password: "",
-    symptoms: "",
+    ailment: "",
     flavors:""
 });
+//data
+const [data,setData] = useState([]);
 
   //this is our BUTTON STATE
   const [buttonOn, setButtonOn] = useState(true);
@@ -20,14 +24,15 @@ const Suggestions = () => {
     name: "",
     email: "",
     password: "",
-    symptoms: "",
-    flavors:""
+    ailment: "",
+    flavors:"",
+    effects:""
   });
 
   //Here is the function to CHANGE STATE(newUser)
   const inputChange = (event) => {
     event.persist();
-    Schema(event);
+    //Schema(event);
     setNewStrain({
       ...strainState,
       [event.target.name]:
@@ -45,17 +50,18 @@ const Suggestions = () => {
   const onSubmitForm = (event) => {
     event.preventDefault();
     axios
-      .post("https://reqres.in/api/users", strainState)
+      .post("https://strains-cannabis.herokuapp.com/predict ", strainState)
       .then((response) => {
-        console.log("succesful", response);
+        console.log("succesful", response.data);
         setPost(response.data); 
-        
+        setData(response.data);
         setNewStrain ({
           name: "",
           email: "",
           password: "",
-          symptoms:"",
-          flavors:""
+          ailment:"",
+          flavors:"",
+          effects:""
         }
       )})
 
@@ -66,50 +72,53 @@ const Suggestions = () => {
   };
   
   //All validation coding below:
-  const formSchema = yup.object().shape({
-    // name: yup
-    //   .string("Please enter name.")
-    //   .required("A valid name is required."),
-    // email: yup
-    //   .string()
-    //   .email("Please enter e-mail")
-    //   .required("Valid e-mail address required."),
-    // password: yup
-    //   .string("Please enter a password")
-    //   .required("Must enter a password"),
-    symptoms: yup
-      .string()
-      .oneOf(["symptom1", "symptom2", "symptom3", "symptom4"]),
-    flavors: yup
-      .string()
-      .oneOf(["flavor1", "flavor2", "flavor3", "flavor4"]),
+  // const formSchema = yup.object().shape({
+  //   // name: yup
+  //   //   .string("Please enter name.")
+  //   //   .required("A valid name is required."),
+  //   // email: yup
+  //   //   .string()
+  //   //   .email("Please enter e-mail")
+  //   //   .required("Valid e-mail address required."),
+  //   // password: yup
+  //   //   .string("Please enter a password")
+  //   //   .required("Must enter a password"),
+  //   ailment: yup
+  //     .string()
+  //     .oneOf(["headaches", "symptom2", "symptom3", "symptom4"]),
+  //   flavors: yup
+  //     .string()
+  //     .oneOf(["flavor1", "flavor2", "flavor3", "flavor4"]),
       
-    });
+   // });
 
-  const Schema = (e) => {
-    yup
-      .reach(formSchema, e.target.name)
-      .validate(
-        e.target.type === "checkbox" ? e.target.checked : e.target.value
-      )
-      .then((response) => {
-        console.log("succesful", response);
-        setErrors({ ...errors, [e.target.name]: "" });
-      })
-      .catch((response) => {
-        console.log("error", response);
-        setErrors({ ...errors, [e.target.name]: response.errors[0] });
-      });
-  };
+  // const Schema = (e) => {
+  //   yup
+  //     .reach(formSchema, e.target.name)
+  //     .validate(
+  //       e.target.type === "checkbox" ? e.target.checked : e.target.value
+  //     )
+  //     .then((response) => {
+  //       console.log("succesful", response);
+  //       setErrors({ ...errors, [e.target.name]: "" });
+  //     })
+  //     .catch((response) => {
+  //       console.log("error", response);
+  //       setErrors({ ...errors, [e.target.name]: response.errors[0] });
+  //     });
+  // };
 
-  useEffect(() => {
-    formSchema.isValid(strainState).then((succesful) => {
-      console.log("working", succesful);
-      setButtonOn(!succesful);
-    });
-  }, [strainState]);
+  // useEffect(() => {
+  //   formSchema.isValid(strainState).then((succesful) => {
+  //     console.log("working", succesful);
+  //     setButtonOn(!succesful);
+  //   });
+  // }, [strainState]);
 
   return (
+    <div>
+    <NavHeader/>
+    <div className = "p-5">
     <form onSubmit={onSubmitForm}>
       <h1>Strain Form</h1>
       {/* <label htmlFor="name">
@@ -153,47 +162,67 @@ const Suggestions = () => {
         />
       </label> */}
 
-    <label htmlFor="symptoms">
-        Symptoms
+    <label htmlFor="ailment">
+    ailment
         <select
                 type="text"
-                name="symptoms"
-                value={strainState.symptoms}
+                name="ailment"
+                value={strainState.ailment}
                 onChange={inputChange}
                 data-cy="symptoms">
 
           <option value="">--Choose One--</option>
-          <option value='symptom1' data-cy="symptom1" >symptom1</option>
-          <option value='symptom2' data-cy="symptom2">symptom2</option>
-          <option value='symptom3' data-cy="symptom3">symptom3</option>
-          <option value='symptom4' data-cy="symptom4">symptom4</option>
+          <option value='headaches' data-cy="symptom1" >headaches</option>
+          <option value='nausia' data-cy="symptom2">nausia</option>
+          <option value='restlessness' data-cy="symptom3">restlessness</option>
+          <option value='paranoia' data-cy="symptom4">paranoia</option>
 
         </select>
-    </label>
-            
-    <label htmlFor="flavors">
-        Flavor
-        <select
-                type="text"
-                name="flavors"
-                value={strainState.flavors}
-                onChange={inputChange}
-                data-cy="flavors">  
+      </label>          
+      <label htmlFor="flavors">
+          Flavor
+          <select
+                  type="text"
+                  name="flavors"
+                  value={strainState.flavors}
+                  onChange={inputChange}
+                  data-cy="flavors">  
 
-          <option value="">--Choose One--</option>
-          <option value='flavor1' data-cy="flavor1" >flavor1</option>
-          <option value='flavor2' data-cy="flavor2">flavor2</option>
-          <option value='flavor3' data-cy="flavor3">flavor3</option>
-          <option value='flavor4' data-cy="flavor4">flavor4</option>
+            <option value="">--Choose One--</option>
+            <option value='Earthy' data-cy="flavor1" >Earthy</option>
+            <option value='Sweet' data-cy="flavor2">Sweet</option>
+            <option value='Citrus' data-cy="flavor3">Citrus</option>
+            <option value='Diesal' data-cy="flavor4">Diesal</option>
 
-        </select>
-    </label>
+          </select>
+      </label>
+      <label htmlFor="effects">
+          Effects
+          <select
+                  type="text"
+                  name="effects"
+                  value={strainState.effects}
+                  onChange={inputChange}
+                  data-cy="flavors">  
 
-      <button type="submit" disabled={buttonOn} data-cy="submit">
+            <option value="">--Choose One--</option>
+            <option value='Energetic' data-cy="flavor1" >Energetic</option>
+            <option value='Tingly' data-cy="flavor2">Tingly</option>
+            <option value='Euphoric' data-cy="flavor3">Euphoric</option>
+            <option value='Relaxed' data-cy="flavor4">Relaxed</option>
+
+          </select>
+      </label>
+
+      <button type="submit"  data-cy="submit">
         Submit
       </button>
           {/* <pre>{JSON.stringify(post, null, 2)}</pre> */}
     </form>
+    
+    <Strains weed = {data} />
+    </div>
+    </div>
   );
 };
     

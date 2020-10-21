@@ -31,10 +31,11 @@ const Login = (props) => {
             username:"",
             password:""
         })
+        history.push("/nav")
     }
 
     return (
-        <Container className="App">
+        <Container className="App p-5">
           <h2>Sign In</h2>
           <Form className="form" onSubmit={handleSubmit} >
             <Col>
