@@ -29,7 +29,7 @@ const Signup = (props) => {
 
         if(formState.username && formState.password){            
             props.createUser(formState)
-            return history.push('/')
+            return history.push('/login')
         }
 
         return setFormState({
@@ -39,8 +39,10 @@ const Signup = (props) => {
     }
 
     return (
-        <Container className="App">
+        <Container className="App p-5">
           <h2>Sign Up</h2>
+          <h3>Registering for the first time?</h3>
+          <h4>Please , Sign up!</h4>
           <Form className="form" onSubmit={handleSubmit} >
             <Col>
               <FormGroup>
