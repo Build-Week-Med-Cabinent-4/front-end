@@ -35,10 +35,7 @@ const [data,setData] = useState([]);
     //Schema(event);
     setNewStrain({
       ...strainState,
-      [event.target.name]:
-        event.target.type === "checkbox"
-          ? event.target.checked
-          : event.target.value
+      [event.target.name]: event.target.value
     });
     console.log(strainState);
   };
@@ -71,49 +68,38 @@ const [data,setData] = useState([]);
       });
   };
   
-  //All validation coding below:
-  // const formSchema = yup.object().shape({
-  //   // name: yup
-  //   //   .string("Please enter name.")
-  //   //   .required("A valid name is required."),
-  //   // email: yup
-  //   //   .string()
-  //   //   .email("Please enter e-mail")
-  //   //   .required("Valid e-mail address required."),
-  //   // password: yup
-  //   //   .string("Please enter a password")
-  //   //   .required("Must enter a password"),
-  //   ailment: yup
-  //     .string()
-  //     .oneOf(["headaches", "symptom2", "symptom3", "symptom4"]),
-  //   flavors: yup
-  //     .string()
-  //     .oneOf(["flavor1", "flavor2", "flavor3", "flavor4"]),
-      
-   // });
+//   All validation coding below:
+  const formSchema = yup.object().shape({
+    ailment: yup
+      .string()
+      .oneOf(["headaches", "stress", "insomnia", "NaN"]),
+    flavors: yup
+      .string()
+      .oneOf(["Earthy", "Sweet", "Citrus", "Diesal"]),
+    effects: yup
+      .string()
+      .oneOf(["Energetic", "Tingly", "Euphoric", "Relaxed"]),
+   });
 
-  // const Schema = (e) => {
-  //   yup
-  //     .reach(formSchema, e.target.name)
-  //     .validate(
-  //       e.target.type === "checkbox" ? e.target.checked : e.target.value
-  //     )
-  //     .then((response) => {
-  //       console.log("succesful", response);
-  //       setErrors({ ...errors, [e.target.name]: "" });
-  //     })
-  //     .catch((response) => {
-  //       console.log("error", response);
-  //       setErrors({ ...errors, [e.target.name]: response.errors[0] });
-  //     });
-  // };
+  const Schema = (e) => {
+    yup
+      .reach(formSchema, e.target.name)
+      .then((response) => {
+        console.log("succesful", response);
+        setErrors({ ...errors, [e.target.name]: "" });
+      })
+      .catch((response) => {
+        console.log("error", response);
+        setErrors({ ...errors, [e.target.name]: response.errors[0] });
+      });
+  };
 
-  // useEffect(() => {
-  //   formSchema.isValid(strainState).then((succesful) => {
-  //     console.log("working", succesful);
-  //     setButtonOn(!succesful);
-  //   });
-  // }, [strainState]);
+  useEffect(() => {
+    formSchema.isValid(strainState).then((succesful) => {
+      console.log("working", succesful);
+      setButtonOn(!succesful);
+    });
+  }, [strainState]);
 
   return (
     <div>
@@ -121,60 +107,21 @@ const [data,setData] = useState([]);
     <div className = "p-5">
     <form onSubmit={onSubmitForm}>
       <h1>Strain Form</h1>
-      {/* <label htmlFor="name">
-        Name
-        <input
-          id="name"
-          name="name"
-          placeholder="Enter Name Here"
-          type="text"
-          value={strainState.name}
-          onChange={inputChange}
-          data-cy="name"
-        />
-      </label>
-      <label htmlFor="email">
-        E-mail
-        {errors.email.length > 0 ? (
-          <p className="error">{errors.email}</p>
-        ) : null}
-        <input
-          id="email"
-          name="email"
-          placeholder="Enter your e-mail here"
-          type="email"
-          value={strainState.email}
-          onChange={inputChange}
-          data-cy="email"
-        />
-      </label>
-      <label htmlFor="password">
-        Password
-        <input
-          id="password"
-          name="password"
-          placeholder="Enter your password here."
-          type="password"
-          value={strainState.password}
-          onChange={inputChange}
-          data-cy="password"
-        />
-      </label> */}
 
     <label htmlFor="ailment">
-    ailment
+    Ailment
         <select
                 type="text"
                 name="ailment"
                 value={strainState.ailment}
                 onChange={inputChange}
-                data-cy="symptoms">
+                data-cy="ailment">
 
           <option value="">--Choose One--</option>
-          <option value='headaches' data-cy="symptom1" >headaches</option>
-          <option value='nausia' data-cy="symptom2">nausia</option>
-          <option value='restlessness' data-cy="symptom3">restlessness</option>
-          <option value='paranoia' data-cy="symptom4">paranoia</option>
+          <option value='headaches' data-cy="headaches" >headaches</option>
+          <option value='stress' data-cy="stress">stress</option>
+          <option value='insomnia' data-cy="insomnia">insomnia</option>
+          <option value='NaN' data-cy="NaN">NaN</option>
 
         </select>
       </label>          
@@ -188,10 +135,10 @@ const [data,setData] = useState([]);
                   data-cy="flavors">  
 
             <option value="">--Choose One--</option>
-            <option value='Earthy' data-cy="flavor1" >Earthy</option>
-            <option value='Sweet' data-cy="flavor2">Sweet</option>
-            <option value='Citrus' data-cy="flavor3">Citrus</option>
-            <option value='Diesal' data-cy="flavor4">Diesal</option>
+            <option value='Earthy' data-cy="Earthy" >Earthy</option>
+            <option value='Sweet' data-cy="Sweet">Sweet</option>
+            <option value='Citrus' data-cy="Citrus">Citrus</option>
+            <option value='Diesal' data-cy="Diesal">Diesal</option>
 
           </select>
       </label>
@@ -206,14 +153,14 @@ const [data,setData] = useState([]);
 
             <option value="">--Choose One--</option>
             <option value='Energetic' data-cy="Energetic" >Energetic</option>
-            <option value='Tingly' data-cy="flavor2">Tingly</option>
-            <option value='Euphoric' data-cy="flavor3">Euphoric</option>
-            <option value='Relaxed' data-cy="flavor4">Relaxed</option>
+            <option value='Tingly' data-cy="Tingly">Tingly</option>
+            <option value='Euphoric' data-cy="Euphoric">Euphoric</option>
+            <option value='Relaxed' data-cy="Relaxed">Relaxed</option>
 
           </select>
       </label>
 
-      <button type="submit"  data-cy="submit">
+      <button type="submit"  data-cy="submit" disabled={buttonOn}>
         Submit
       </button>
           {/* <pre>{JSON.stringify(post, null, 2)}</pre> */}
