@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { createUser } from '../actions/actions'
 import { Link } from "react-router-dom";
+import * as yup from "yup";
 
 import {Container,
   Col,
@@ -34,6 +35,7 @@ const toggle = () => setIsOpen(!isOpen);
             ...formState,
             [e.target.name]: e.target.value
         })
+        
     }
 
     const handleSubmit = e => {
@@ -50,6 +52,12 @@ const toggle = () => setIsOpen(!isOpen);
         })
     }
 
+    
+    
+
+   
+
+    
     return (
       <>
       <Container className = "p-0" fluid={true} >
@@ -97,7 +105,7 @@ const toggle = () => setIsOpen(!isOpen);
                 />
               </FormGroup>
             </Col>
-            <Button>Submit</Button>
+            <Button> Submit </Button>
           </Form>
         </Container>
         </>
