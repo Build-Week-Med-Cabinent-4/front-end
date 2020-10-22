@@ -2,14 +2,26 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { createUser } from '../actions/actions'
+import { Link } from "react-router-dom";
 
-import {
-    Container, Col, Form,
-    FormGroup, Label, Input,
-    Button,
-  } from 'reactstrap';
+import {Container,
+  Col,
+  Row, 
+  Collapse,
+  Navbar,
+ NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+   Form,
+  FormGroup, Label, Input,
+  Button,
+} from 'reactstrap';
   
 const Signup = (props) => {
+            //navBar states
+const [isOpen, setIsOpen] = useState(false);
+const toggle = () => setIsOpen(!isOpen);
     const history = useHistory();
 
     const [formState, setFormState] = useState({
@@ -39,6 +51,23 @@ const Signup = (props) => {
     }
 
     return (
+      <>
+      <Container className = "p-0" fluid={true} >
+          <Navbar className = "border-bottom p-4" color="light" light expand="md">
+        <NavbarBrand href="/">Med-Cabinet</NavbarBrand>
+        <NavbarToggler onClick={toggle} />
+        <Collapse isOpen={isOpen} navbar>
+          <Nav className="ml-auto" navbar>
+            <NavItem>
+            <Link className = "nav-link font-weight-bolder" to = "/login">Login</Link>
+            </NavItem>
+            <NavItem>
+            <Link className = "nav-link font-weight-bolder" to = "/signup">Sign-up</Link>
+            </NavItem>
+            </Nav>
+          </Collapse>
+        </Navbar>
+        </Container>
         <Container className="App p-5">
           <h2>Sign Up</h2>
           <h3>Registering for the first time?</h3>
@@ -71,6 +100,7 @@ const Signup = (props) => {
             <Button>Submit</Button>
           </Form>
         </Container>
+        </>
       );
 }
 

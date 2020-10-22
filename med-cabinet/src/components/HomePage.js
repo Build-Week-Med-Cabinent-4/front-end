@@ -35,8 +35,10 @@ const toggle = () => setIsOpen(!isOpen);
           </Collapse>
         </Navbar>
         </Container>
-            <div className = "justify-content-center d-flex">
-                <h3>The Greatest Source of Cannabis Needs</h3>
+            <div className = "justify-content-center d-flex flex-column align-items-center">
+                <h3>Welcome To The App That Will Match You To The Perfect Cannabis!</h3>
+                <h4>Click Sign-up If You've Never Been With Us Before</h4>
+                <h4>Or Just Login!</h4>
             </div> 
         </div>
     )
