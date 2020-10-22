@@ -1,24 +1,24 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { logIn } from '../actions/actions'
+import { createUser } from '../actions/actions'
 import { Link } from "react-router-dom";
 
 import {Container,
-    Col,
-    Row, 
-    Collapse,
-    Navbar,
-   NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-     Form,
-    FormGroup, Label, Input,
-    Button,
-  } from 'reactstrap';
+  Col,
+  Row, 
+  Collapse,
+  Navbar,
+ NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+   Form,
+  FormGroup, Label, Input,
+  Button,
+} from 'reactstrap';
   
-const Login = (props) => {
+const Signup = (props) => {
             //navBar states
 const [isOpen, setIsOpen] = useState(false);
 const toggle = () => setIsOpen(!isOpen);
@@ -38,12 +38,16 @@ const toggle = () => setIsOpen(!isOpen);
 
     const handleSubmit = e => {
         e.preventDefault();
-        props.logIn(formState)
-        setFormState({
-            username:"",
-            password:""
+
+        if(formState.username && formState.password){            
+            props.createUser(formState)
+            return history.push('/login')
+        }
+
+        return setFormState({
+            username: "",
+            password: ""
         })
-        history.push("/nav")
     }
 
     return (
@@ -65,7 +69,9 @@ const toggle = () => setIsOpen(!isOpen);
         </Navbar>
         </Container>
         <Container className="App p-5">
-          <h2>Sign In</h2>
+          <h2>Sign Up</h2>
+          <h3>Registering for the first time?</h3>
+          <h4>Please , Sign up!</h4>
           <Form className="form" onSubmit={handleSubmit} >
             <Col>
               <FormGroup>
@@ -100,9 +106,8 @@ const toggle = () => setIsOpen(!isOpen);
 
 const mapStateToProps = state => {
     return {
-        ...state,
-        loggingIn: state.loggingIn
+        ...state
     }
 }
 
-export default connect(mapStateToProps, { logIn })(Login)
+export default connect(mapStateToProps, { createUser })(Signup)
