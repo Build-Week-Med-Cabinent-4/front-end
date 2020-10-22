@@ -29,7 +29,8 @@ export const createUser = (creds) => dispatch => {
 
     dispatch({ type: POST_USER });
 
-    axios.post('https://med-cabinet-6.herokuapp.com/api/auth//register', creds)
+    axiosWithAuth()
+    .post('/api/auth/register', creds)
     .then(res => {
         console.log(res.data)
        
