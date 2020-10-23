@@ -61,7 +61,13 @@ function App(props) {
     .post(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains`, weed)
     .then(res => {
       console.log(res.data)
-      setSavedList([...savedList, res.data]);
+      setSavedList([...savedList,res.data]);
+      axios
+      .get(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains`)
+    .then(res => {
+      console.log(res.data)
+    console.log(savedList)
+  })
   })
   .catch(err => {
       console.log(err.message)
@@ -74,22 +80,14 @@ function App(props) {
     .delete(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains/${item.strain_id}`, item)
     .then(res => {
       console.log(res.data)
-      axios
-    .get(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains`)
-    
-    .then(res => {
-      console.log(res.data)
-      setSavedList(res.data)
-      setButton(!button)
-      setButton(!button)
-  })
+      setSavedList(savedList.filter((weed) => ( weed.strain_id !== item.strain_id || weed.id !== item.id
+      )))
+  
   })
   .catch(err => {
       console.log(err.message)
   })
 
-    // setSavedList(savedList.filter(weed => weed.strain_id !== item.strain_id));
-    // console.log(savedList)
   }
   
   const updateItem = (item,string) => {
