@@ -21,7 +21,7 @@ import {Container,
   } from 'reactstrap';
   
 const Login = (props) => {
-  const {setUserId, userId}=useContext(UserContext);
+  const {setUserId, userId, setButton, button}=useContext(UserContext);
   const [isClicked, setClicked] = useState(true);
             //navBar states
 const [isOpen, setIsOpen] = useState(false);
@@ -52,6 +52,8 @@ const toggle = () => setIsOpen(!isOpen);
         })
         setClicked(!isClicked)
         setClicked(!isClicked)
+        setButton(!button)
+        setButton(!button)
         makePush();
     }
 useEffect(() => {

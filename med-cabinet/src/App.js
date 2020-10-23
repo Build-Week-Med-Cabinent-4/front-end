@@ -53,7 +53,7 @@ function App(props) {
   .catch(err => {
       console.log(err.message)
   })
-  }, [props,button] );
+  }, [button] );
   const addToSavedList = weed => {
 
     console.log(userId)
@@ -61,13 +61,8 @@ function App(props) {
     .post(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains`, weed)
     .then(res => {
       console.log(res.data)
-      setSavedList([...savedList,res.data]);
-      axios
-      .get(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains`)
-    .then(res => {
-      console.log(res.data)
-    console.log(savedList)
-  })
+      setButton(!button)
+      setButton(!button)
   })
   .catch(err => {
       console.log(err.message)
@@ -82,6 +77,8 @@ function App(props) {
       console.log(res.data)
       setSavedList(savedList.filter((weed) => ( weed.strain_id !== item.strain_id || weed.id !== item.id
       )))
+      setButton(!button)
+      setButton(!button)
   
   })
   .catch(err => {
@@ -95,8 +92,7 @@ function App(props) {
     .put(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains/${item.strain_id}`, string)
     .then(res => {
       console.log(res.data)
-
-    axios
+      axios
     .get(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains`)
     
     .then(res => {
@@ -118,7 +114,7 @@ const toggle = () => setIsOpen(!isOpen);
   <>
   <Router>
   <ProductContext.Provider value={{addToSavedList,deleteItem,updateItem}}>
-    <UserContext.Provider value = {{userId,setUserId}}>
+  <UserContext.Provider value = {{userId,setUserId, setButton,button}}>
 		<WeedContext.Provider value={{savedList, dummy , setDummy}}>
     <Container className = "p-0" fluid={true} >
         <Switch>

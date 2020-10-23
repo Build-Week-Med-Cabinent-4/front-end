@@ -25,6 +25,9 @@ const Home = () => {
                     Whether you're sick of being sick or aggitated , we have something for you!<br/>
                     Also , feel free to save strains that peak your interest to look at them later !
                 </p>
+                <h2>Wanna Leave the app and go back to our Landing page?</h2>
+                <h3>Click here!</h3>
+                <a href = "https://medcabinent.netlify.app/">Landing Page</a>
             </div> 
         </div>
     )
