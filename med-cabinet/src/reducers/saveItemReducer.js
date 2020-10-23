@@ -5,7 +5,7 @@ const initialState = {
     saving:false,
 
 }
-export const saveItemReducer = (state = initialState, action) => {
+const saveItemReducer = (state = initialState, action) => {
 
     switch(action.type){
         case SAVE_INITIALIZE : 
@@ -14,12 +14,20 @@ export const saveItemReducer = (state = initialState, action) => {
             saving: true
         }
         case SAVE_RECOMMEND_SUCCESS :
+            console.log(action.payload)
         return {
             ...state,
             saving: false,
-            saved.push[action.payload]
+            saved:[...state, action.payload]
         }
         case SAVE_RECOMMEND_FAILURE :
+
         return {
             ...state
         }   
+        default:
+            return state
+          
+        }
+    }
+     export default saveItemReducer;

@@ -3,16 +3,16 @@ import { Container, Row, Col } from 'reactstrap';
 import { saveRecommend } from '../actions/actions';
 import { connect } from 'react-redux'
 import {ProductContext} from '../context/ProductContext'
+import {UserContext} from '../context/UserContext'
 
 const Strains = (props) => {
     const {addToSavedList}=useContext(ProductContext);
-    const saveStrain = (weed) => {
-        addToSavedList(weed)
-    }
+    const {userId}=useContext(UserContext);
+
     const handleSubmit = (weed) => {
-        addToSavedList(weed);
+        //props.saveRecommend(weed,userId)
+        addToSavedList(weed)
         console.log("working")
-        console.log(weed)
     }
     return (
       <>

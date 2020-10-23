@@ -2,7 +2,8 @@ import {POST_USER, USER_SUCCESS, USER_ERROR} from '../actions/actions';
 
 //setting up initial state 
 const initialState = {
-    isPosting:false
+    isPosting:false,
+    userID:0
 
 }
 const signupReducer = (state = initialState, action) => {
@@ -16,6 +17,7 @@ const signupReducer = (state = initialState, action) => {
             console.log(action.payload)
             return {
                     ...state,
+                    userID: action.payload.id,
                     isPosting: false
                 }
         case USER_ERROR :

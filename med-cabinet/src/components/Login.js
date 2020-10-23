@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState,useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logIn } from '../actions/actions'
 import { Link } from "react-router-dom";
+import { UserContext } from '../context/UserContext';
+import { Redirect } from "react-router-dom";
 
 import {Container,
     Col,
@@ -19,6 +21,8 @@ import {Container,
   } from 'reactstrap';
   
 const Login = (props) => {
+  const {setUserId, userId}=useContext(UserContext);
+  const [isClicked, setClicked] = useState(true);
             //navBar states
 const [isOpen, setIsOpen] = useState(false);
 const toggle = () => setIsOpen(!isOpen);
@@ -35,17 +39,30 @@ const toggle = () => setIsOpen(!isOpen);
             [e.target.name]: e.target.value
         })
     }
-
+    const makePush = () => {
+      return history.push('/nav')
+    }
     const handleSubmit = e => {
         e.preventDefault();
-        props.logIn(formState)
-        setFormState({
+        props.logIn(formState,setUserId)
+        console.log(userId)
+          setFormState({
             username:"",
             password:""
         })
-        history.push("/nav")
+        setClicked(!isClicked)
+        setClicked(!isClicked)
+        makePush();
     }
-
+useEffect(() => {
+  console.log("ahhh")
+  if(isClicked===false){
+    history.push('/nav')
+  }
+  else{
+    console.log(null);
+  }
+}, [isClicked] );
     return (
       <>
       <Container className = "p-0" fluid={true} >
@@ -101,7 +118,8 @@ const toggle = () => setIsOpen(!isOpen);
 const mapStateToProps = state => {
     return {
         ...state,
-        loggingIn: state.loggingIn
+        loggingIn: state.loggingIn,
+        userInfo:state.userInfo
     }
 }
 

@@ -3,8 +3,10 @@ import {LOGGING_IN, LOGIN_SUCCESS, LOGIN_ERROR, LOGOUT} from '../actions/actions
 const initialState = {
     logginIn: false,
     token: '',
-    userId: 0,
-    logError:  ''
+    userInfo: 0,
+    userId:0,
+    logError:  '',
+    username: ''
 }
 
 const loginReducer = (state = initialState, action) => {
@@ -18,7 +20,8 @@ const loginReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loggingIn: false,
-                userId: action.payload.id,
+                userInfo: action.payload.userInfo,
+                username:action.payload.username,
                 token: action.payload.token
             }
         case LOGIN_ERROR :
