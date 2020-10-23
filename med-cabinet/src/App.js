@@ -74,13 +74,22 @@ function App(props) {
     .delete(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains/${item.strain_id}`, item)
     .then(res => {
       console.log(res.data)
+      axios
+    .get(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains`)
+    
+    .then(res => {
+      console.log(res.data)
+      setSavedList(res.data)
+      setButton(!button)
+      setButton(!button)
+  })
   })
   .catch(err => {
       console.log(err.message)
   })
 
-    setSavedList(savedList.filter(weed => weed.strain_id !== item.strain_id));
-    console.log(savedList)
+    // setSavedList(savedList.filter(weed => weed.strain_id !== item.strain_id));
+    // console.log(savedList)
   }
   
   const updateItem = (item,string) => {
