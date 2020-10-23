@@ -1,6 +1,7 @@
+import React, { useState, useContext } from "react";
 import axios from 'axios'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
-
+import {UserContext} from '../context/UserContext'
 //sign up
 
 export const POST_USER = "POST_USER"
@@ -23,6 +24,7 @@ export const SAVE_INITIALIZE = 'SAVE_INITIALIZE'
 export const SAVE_RECOMMEND_SUCCESS = 'SAVE_RECOMMEND_SUCCESS'
 export const SAVE_RECOMMEND_FAILURE = 'SAVE_RECOMMEND_FAILURE' 
 
+
 //function to create user
 
 export const createUser = (creds) => dispatch => {
@@ -30,10 +32,10 @@ export const createUser = (creds) => dispatch => {
     dispatch({ type: POST_USER });
 
     axiosWithAuth()
-    .post('/api/auth/register', creds)
+    .post('/register', creds)
     .then(res => {
         console.log(res.data)
-       
+        window.localStorage.setItem('token', res.data.token)
         dispatch({ type: USER_SUCCESS, payload: res.data })
     })
     .catch(err => {
@@ -44,14 +46,19 @@ export const createUser = (creds) => dispatch => {
 
 //function to login 
 
-export const logIn = (creds) => dispatch => {
-
+export const logIn = (creds,cb) => dispatch => {
     dispatch({ type: LOGGING_IN })
-
-    axios.post("https://med-cabinet-6.herokuapp.com/api/auth/login", creds)
+    
+    axiosWithAuth()
+    .post("/login", creds)
     .then(res => {
         console.log("success")
+        console.log(res)
+        window.localStorage.setItem('token', res.data.token)
+        cb(res.data.userInfo)
+        cb(res.data.userInfo)
         dispatch({ type: LOGIN_SUCCESS, payload: res.data })
+        
     })
     .catch(err => {
         console.log(err.message)
@@ -70,10 +77,11 @@ export const logOut = () => {
 
 //function to save reccomendations
 
-export const saveRecommend = (weed) => dispatch => {
+export const saveRecommend = (weed,userId) => dispatch => {
     dispatch ({ type: SAVE_INITIALIZE })
 
-    axiosWithAuth().post(`/recommendations`, weed)
+    axios
+    .post(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains`, weed)
     .then(res => {
         console.log(res.data)
         dispatch({ type: SAVE_RECOMMEND_SUCCESS, payload: res.data.message })
