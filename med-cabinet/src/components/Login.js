@@ -4,7 +4,9 @@ import { connect } from 'react-redux'
 import { logIn } from '../actions/actions'
 import { Link } from "react-router-dom";
 import { UserContext } from '../context/UserContext';
+import { WeedContext } from '../context/WeedContext';
 import { Redirect } from "react-router-dom";
+import axios from 'axios';
 
 import {Container,
     Col,
@@ -22,7 +24,7 @@ import {Container,
   
 const Login = (props) => {
   const {setUserId, userId, setButton, button}=useContext(UserContext);
-  const [isClicked, setClicked] = useState(true);
+  const {setSavedList}=useContext(WeedContext);
             //navBar states
 const [isOpen, setIsOpen] = useState(false);
 const toggle = () => setIsOpen(!isOpen);
@@ -40,31 +42,24 @@ const toggle = () => setIsOpen(!isOpen);
         })
     }
     const makePush = () => {
-      return history.push('/nav')
+      return history.push('/')
     }
     const handleSubmit = e => {
         e.preventDefault();
         props.logIn(formState,setUserId)
-        console.log(userId)
           setFormState({
             username:"",
             password:""
         })
-        setClicked(!isClicked)
-        setClicked(!isClicked)
         setButton(!button)
         setButton(!button)
         makePush();
     }
-useEffect(() => {
-  console.log("ahhh")
-  if(isClicked===false){
-    history.push('/nav')
-  }
-  else{
-    console.log(null);
-  }
-}, [isClicked] );
+    useEffect(() => {
+      setUserId(window.localStorage.getItem('userInfo'));
+      console.log(userId)
+      
+    },[handleSubmit, window.onload])
     return (
       <>
       <Container className = "p-0" fluid={true} >
@@ -121,7 +116,8 @@ const mapStateToProps = state => {
     return {
         ...state,
         loggingIn: state.loggingIn,
-        userInfo:state.userInfo
+        userInfo:state.userInfo,
+        res:state.res
     }
 }
 

@@ -1,7 +1,7 @@
 import React, { useEffect,useState } from 'react';
 import './App.css';
 import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom"
-import { useHistory,useParams } from "react-router";
+import { useHistory,useParams,useLocation } from "react-router";
 import "./styles.css";
 //import axiosWithAuth from './utils/axiosWithAuth';
 import {axiosWithAuth} from './utils/axiosWithAuth';
@@ -21,6 +21,7 @@ import Home from './components/Home';
 import PrivateRoute from './utils/PrivateRoute';
 import { logIn } from './actions/actions'
 import UpdateList from './components/UpdateList'
+import LogOut from './components/LogOut'
 //reactstrap styles
 import {Container, 
   Collapse,
@@ -31,7 +32,7 @@ import {Container,
   NavItem
 } from 'reactstrap';
 
-function App(props) {
+function App() {
   //saved list
   const [savedList, setSavedList] = useState([]);
   const [userId, setUserId] = useState(null);
@@ -39,11 +40,34 @@ function App(props) {
   const [dummy,setDummy] = useState({
     strain:"Citrus-Punch"
   });
-
-  const history = useHistory();
+  const location = useLocation;
+  //attempt to fix reload
+  useEffect(() => {
+    if (window.performance) {
+      if (performance.navigation.type == 1) {
+        setUserId(window.localStorage.getItem('userInfo'));
+        
+        axios
+    .get(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains`)
+    .then(res => {
+      console.log(res.data)
+      setSavedList(res.data)
+  })
+  .catch(err => {
+      console.log(err.message)
+  })
+  
+    console.log(userId)
+      } else {
+        alert( "This page is not reloaded");
+      }
+    }
+  },[window.performance.navigation])
 
   useEffect(() => {
     console.log(userId)
+    setUserId(window.localStorage.getItem('userInfo'));
+    console.log(window.localStorage.getItem('userInfo'))
     axios
     .get(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains`)
     .then(res => {
@@ -115,7 +139,7 @@ const toggle = () => setIsOpen(!isOpen);
   <Router>
   <ProductContext.Provider value={{addToSavedList,deleteItem,updateItem}}>
   <UserContext.Provider value = {{userId,setUserId, setButton,button}}>
-		<WeedContext.Provider value={{savedList, dummy , setDummy}}>
+		<WeedContext.Provider value={{savedList, dummy , setDummy, setSavedList}}>
     <Container className = "p-0" fluid={true} >
         <Switch>
         <Route exact path= "/">
@@ -145,6 +169,9 @@ const toggle = () => setIsOpen(!isOpen);
           <Route exact path= "/strains:id">
             <Strains addToSavedList = {addToSavedList} />
           </Route>
+          <Route exact path= "/logged-out">
+            <LogOut />
+          </Route>
 
         </Switch>
       </Container>
@@ -156,13 +183,4 @@ const toggle = () => setIsOpen(!isOpen);
   );
 }
 
-const mapStateToProps = state => {
-  return {
-      ...state,
-      loggingIn: state.loggingIn,
-      userInfo:state.userInfo,
-      username: state.username
-  }
-}
-
-export default connect(mapStateToProps, { logIn })(App)
+export default App;

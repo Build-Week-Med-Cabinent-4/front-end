@@ -6,7 +6,8 @@ const initialState = {
     userInfo: 0,
     userId:0,
     logError:  '',
-    username: ''
+    message:"",
+    res:{}
 }
 
 const loginReducer = (state = initialState, action) => {
@@ -14,15 +15,16 @@ const loginReducer = (state = initialState, action) => {
         case LOGGING_IN :
             return {
                 ...state,
-                loggingIn: true,
+                loggingIn: true
             }
         case LOGIN_SUCCESS :
             return {
                 ...state,
                 loggingIn: false,
                 userInfo: action.payload.userInfo,
-                username:action.payload.username,
-                token: action.payload.token
+                message: action.payload.message,
+                token: action.payload.token,
+                res:action.payload
             }
         case LOGIN_ERROR :
             return {

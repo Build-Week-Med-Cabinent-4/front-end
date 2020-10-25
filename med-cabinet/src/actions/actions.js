@@ -32,7 +32,7 @@ export const createUser = (creds) => dispatch => {
     dispatch({ type: POST_USER });
 
     axiosWithAuth()
-    .post('/register', creds)
+    .post('auth/register', creds)
     .then(res => {
         console.log(res.data)
         window.localStorage.setItem('token', res.data.token)
@@ -50,12 +50,12 @@ export const logIn = (creds,cb) => dispatch => {
     dispatch({ type: LOGGING_IN })
     
     axiosWithAuth()
-    .post("/login", creds)
+    .post("auth/login", creds)
     .then(res => {
         console.log("success")
         console.log(res)
         window.localStorage.setItem('token', res.data.token)
-        cb(res.data.userInfo)
+        window.localStorage.setItem('userInfo', res.data.userInfo)
         cb(res.data.userInfo)
         dispatch({ type: LOGIN_SUCCESS, payload: res.data })
         
@@ -70,6 +70,7 @@ export const logIn = (creds,cb) => dispatch => {
 
 export const logOut = () => {
     window.localStorage.clear();
+    console.log("loggin out")
     return {
         type: LOGOUT
     }
