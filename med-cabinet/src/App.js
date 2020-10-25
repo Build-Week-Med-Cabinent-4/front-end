@@ -47,8 +47,8 @@ function App() {
       if (performance.navigation.type == 1) {
         setUserId(window.localStorage.getItem('userInfo'));
         
-        axios
-    .get(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains`)
+        axiosWithAuth()
+    .get(`/users/${userId}/strains`)
     .then(res => {
       console.log(res.data)
       setSavedList(res.data)
@@ -58,8 +58,6 @@ function App() {
   })
   
     console.log(userId)
-      } else {
-        alert( "This page is not reloaded");
       }
     }
   },[window.performance.navigation])
@@ -68,8 +66,8 @@ function App() {
     console.log(userId)
     setUserId(window.localStorage.getItem('userInfo'));
     console.log(window.localStorage.getItem('userInfo'))
-    axios
-    .get(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains`)
+    axiosWithAuth()
+    .get(`/users/${userId}/strains`)
     .then(res => {
       console.log(res.data)
       setSavedList(res.data)
@@ -81,8 +79,8 @@ function App() {
   const addToSavedList = weed => {
 
     console.log(userId)
-    axios
-    .post(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains`, weed)
+    axiosWithAuth()
+    .post(`/users/${userId}/strains`, weed)
     .then(res => {
       console.log(res.data)
       setButton(!button)
@@ -95,8 +93,8 @@ function App() {
   const deleteItem = (item) => {
     console.log(item)
     console.log(item.Strain)
-    axios
-    .delete(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains/${item.strain_id}`, item)
+    axiosWithAuth()
+    .delete(`users/${userId}/strains/${item.strain_id}`, item)
     .then(res => {
       console.log(res.data)
       setSavedList(savedList.filter((weed) => ( weed.strain_id !== item.strain_id || weed.id !== item.id
@@ -112,12 +110,12 @@ function App() {
   }
   
   const updateItem = (item,string) => {
-    axios
-    .put(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains/${item.strain_id}`, string)
+    axiosWithAuth()
+    .put(`/users/${userId}/strains/${item.strain_id}`, string)
     .then(res => {
       console.log(res.data)
-      axios
-    .get(`https://med-cabinet-6.herokuapp.com/api/users/${userId}/strains`)
+      axiosWithAuth()
+    .get(`/users/${userId}/strains`)
     
     .then(res => {
       console.log(res.data)
